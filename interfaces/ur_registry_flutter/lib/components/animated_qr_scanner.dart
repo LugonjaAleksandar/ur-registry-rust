@@ -75,10 +75,7 @@ class _AnimatedQRScanner extends StatefulWidget {
 }
 
 class _AnimatedQRScannerState extends State<_AnimatedQRScanner> {
-  final MobileScannerController controller = MobileScannerController(
-    detectionSpeed: DetectionSpeed.noDuplicates,
-    cameraResolution: const Size(1920, 1080),
-  );
+  final MobileScannerController controller = MobileScannerController(detectionSpeed: DetectionSpeed.noDuplicates);
   late final _Cubit _cubit;
 
   @override
