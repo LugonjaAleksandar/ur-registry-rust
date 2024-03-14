@@ -35,6 +35,7 @@ class _Cubit extends Cubit<_State> {
   @override
   Future<void> close() async {
     timer.cancel();
+    super.close();
   }
 
   String get currentQR => _currentQR;
