@@ -98,12 +98,14 @@ class _AnimatedQRCodeState extends State<_AnimatedQRCode> {
           data: state.data,
           size: _cubit.style.size,
           backgroundColor: const Color(0xFFFFFFFF),
+          padding: const EdgeInsets.all(8),
         );
       }
       return QrImageView(
         data: _cubit.currentQR,
         size: _cubit.style.size,
         backgroundColor: const Color(0xFFFFFFFF),
+        padding: const EdgeInsets.all(8),
       );
     });
   }
