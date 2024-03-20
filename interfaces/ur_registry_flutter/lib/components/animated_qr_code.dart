@@ -17,11 +17,12 @@ class _AnimatedQRDataState extends _State {
 
 class _Cubit extends Cubit<_State> {
   final UREncoder urEncoder;
+  final PrettyQrDecoration? decoration;
 
   late String _currentQR;
   late Timer timer;
 
-  _Cubit(this.urEncoder) : super(_InitialState());
+  _Cubit(this.urEncoder, this.decoration) : super(_InitialState());
 
   void initial() {
     _currentQR = urEncoder.nextPart();
@@ -43,16 +44,18 @@ class _Cubit extends Cubit<_State> {
 
 class AnimatedQRCode extends StatelessWidget {
   final UREncoder urEncoder;
+  final PrettyQrDecoration? decoration;
 
   const AnimatedQRCode({
     Key? key,
     required this.urEncoder,
+    this.decoration,
   }) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
     return BlocProvider(
-      create: (BuildContext context) => _Cubit(urEncoder),
+      create: (BuildContext context) => _Cubit(urEncoder, decoration),
       child: const _AnimatedQRCode(),
     );
   }
@@ -83,18 +86,12 @@ class _AnimatedQRCodeState extends State<_AnimatedQRCode> {
       if (state is _AnimatedQRDataState) {
         return PrettyQrView.data(
           data: state.data,
-          decoration: const PrettyQrDecoration(
-            background: Color(0xFFFFFFFF),
-            shape: PrettyQrSmoothSymbol(roundFactor: 0),
-          ),
+          decoration: _cubit.decoration,
         );
       }
       return PrettyQrView.data(
         data: _cubit.currentQR,
-        decoration: const PrettyQrDecoration(
-          background: Color(0xFFFFFFFF),
-          shape: PrettyQrSmoothSymbol(roundFactor: 0),
-        ),
+        decoration: _cubit.decoration,
       );
     });
   }
