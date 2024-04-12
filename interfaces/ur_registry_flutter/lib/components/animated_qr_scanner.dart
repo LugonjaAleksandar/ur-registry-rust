@@ -1,5 +1,3 @@
-import 'dart:async';
-
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -76,63 +74,32 @@ class _AnimatedQRScanner extends StatefulWidget {
   _AnimatedQRScannerState createState() => _AnimatedQRScannerState();
 }
 
-class _AnimatedQRScannerState extends State<_AnimatedQRScanner> with WidgetsBindingObserver {
+class _AnimatedQRScannerState extends State<_AnimatedQRScanner> {
   final MobileScannerController controller = MobileScannerController(detectionSpeed: DetectionSpeed.noDuplicates);
-  late final StreamSubscription<Object?>? _subscription;
   late final _Cubit _cubit;
 
   @override
   void initState() {
-    WidgetsBinding.instance.addObserver(this);
     _cubit = BlocProvider.of(context);
-    _subscription = controller.barcodes.listen(_handleBarcode);
-    unawaited(controller.start());
     super.initState();
-  }
-
-  @override
-  Future<void> dispose() async {
-    WidgetsBinding.instance.removeObserver(this);
-    unawaited(_subscription?.cancel());
-    _subscription = null;
-    await controller.dispose();
-    super.dispose();
-  }
-
-  @override
-  void didChangeAppLifecycleState(AppLifecycleState state) {
-    super.didChangeAppLifecycleState(state);
-
-    switch (state) {
-      case AppLifecycleState.detached:
-      case AppLifecycleState.hidden:
-      case AppLifecycleState.paused:
-        return;
-      case AppLifecycleState.resumed:
-        // Restart the scanner when the app is resumed.
-        // Don't forget to resume listening to the barcode events.
-        _subscription = controller.barcodes.listen(_handleBarcode);
-        unawaited(controller.start());
-        return;
-      case AppLifecycleState.inactive:
-        unawaited(_subscription?.cancel());
-        _subscription = null;
-        unawaited(controller.stop());
-        return;
-    }
   }
 
   @override
   Widget build(BuildContext context) {
     return MobileScanner(
       controller: controller,
-      overlayBuilder: _cubit.overlay != null ? (context, constraints) => _cubit.overlay! : null,
+      overlay: _cubit.overlay,
+      onDetect: (BarcodeCapture capture) {
+        for (final barcode in capture.barcodes) {
+          _cubit.receiveQRCode(barcode.rawValue);
+        }
+      },
     );
   }
 
-  void _handleBarcode(BarcodeCapture capture) {
-    for (final barcode in capture.barcodes) {
-      _cubit.receiveQRCode(barcode.rawValue);
-    }
+  @override
+  void dispose() {
+    controller.dispose();
+    super.dispose();
   }
 }
