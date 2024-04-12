@@ -78,7 +78,7 @@ class _AnimatedQRScanner extends StatefulWidget {
 
 class _AnimatedQRScannerState extends State<_AnimatedQRScanner> with WidgetsBindingObserver {
   final MobileScannerController controller = MobileScannerController(detectionSpeed: DetectionSpeed.noDuplicates);
-  late StreamSubscription<Object?>? _subscription;
+  late final StreamSubscription<Object?>? _subscription;
   late final _Cubit _cubit;
 
   @override
@@ -91,11 +91,11 @@ class _AnimatedQRScannerState extends State<_AnimatedQRScanner> with WidgetsBind
   }
 
   @override
-  void dispose() {
+  Future<void> dispose() async {
     WidgetsBinding.instance.removeObserver(this);
     unawaited(_subscription?.cancel());
     _subscription = null;
-    controller.dispose();
+    await controller.dispose();
     super.dispose();
   }
 
