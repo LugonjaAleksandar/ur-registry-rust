@@ -2,7 +2,7 @@ import 'dart:async';
 
 import 'package:flutter/cupertino.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:qr_flutter/qr_flutter.dart';
+import 'package:pretty_qr_code/pretty_qr_code.dart';
 import 'package:ur_registry_flutter/ur_encoder.dart';
 
 abstract class _State {}
@@ -11,17 +11,18 @@ class _InitialState extends _State {}
 
 class _AnimatedQRDataState extends _State {
   final String data;
+
   _AnimatedQRDataState(this.data);
 }
 
 class _Cubit extends Cubit<_State> {
   final UREncoder urEncoder;
-  final AnimatedQRCodeStyle style;
+  final PrettyQrDecoration? decoration;
 
   late String _currentQR;
   late Timer timer;
 
-  _Cubit(this.urEncoder, this.style) : super(_InitialState());
+  _Cubit(this.urEncoder, this.decoration) : super(_InitialState());
 
   void initial() {
     _currentQR = urEncoder.nextPart();
@@ -35,36 +36,26 @@ class _Cubit extends Cubit<_State> {
   @override
   Future<void> close() async {
     timer.cancel();
+    super.close();
   }
 
   String get currentQR => _currentQR;
 }
 
-class AnimatedQRCodeStyle {
-  final double size;
-
-  AnimatedQRCodeStyle({
-    this.size = 200,
-  });
-
-  const AnimatedQRCodeStyle.factory()
-      : size = 200;
-}
-
 class AnimatedQRCode extends StatelessWidget {
   final UREncoder urEncoder;
-  final AnimatedQRCodeStyle style;
+  final PrettyQrDecoration? decoration;
 
-  const AnimatedQRCode(
-      {Key? key,
-      required this.urEncoder,
-      this.style = const AnimatedQRCodeStyle.factory()})
-      : super(key: key);
+  const AnimatedQRCode({
+    Key? key,
+    required this.urEncoder,
+    this.decoration,
+  }) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
     return BlocProvider(
-      create: (BuildContext context) => _Cubit(urEncoder, style),
+      create: (BuildContext context) => _Cubit(urEncoder, decoration),
       child: const _AnimatedQRCode(),
     );
   }
@@ -92,17 +83,15 @@ class _AnimatedQRCodeState extends State<_AnimatedQRCode> {
   @override
   Widget build(BuildContext context) {
     return BlocBuilder<_Cubit, _State>(builder: (context, state) {
-      if(state is _AnimatedQRDataState) {
-        return QrImageView(
+      if (state is _AnimatedQRDataState) {
+        return PrettyQrView.data(
           data: state.data,
-          size: _cubit.style.size,
-          backgroundColor: const Color(0xFFFFFFFF),
+          decoration: _cubit.decoration,
         );
       }
-      return QrImageView(
+      return PrettyQrView.data(
         data: _cubit.currentQR,
-        size: _cubit.style.size,
-        backgroundColor: const Color(0xFFFFFFFF),
+        decoration: _cubit.decoration,
       );
     });
   }
