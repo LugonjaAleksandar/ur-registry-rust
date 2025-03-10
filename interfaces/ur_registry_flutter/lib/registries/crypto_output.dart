@@ -14,9 +14,7 @@ class CryptoOutput extends NativeObject {
     nativeObject = object;
   }
 
-  late NativeGetKey nativeGetKey = lib
-      .lookup<NativeFunction<NativeGetKey>>("${nativePrefix}_get_hd_key")
-      .asFunction();
+  late NativeGetKey nativeGetKey = lib.lookup<NativeFunction<NativeGetKey>>("${nativePrefix}_get_hd_key").asFunction();
 
   CryptoHDKey getKey() {
     final response = nativeGetKey(nativeObject).ref;

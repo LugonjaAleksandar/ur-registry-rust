@@ -46,23 +46,16 @@ class AnimatedQRCode extends StatelessWidget {
   final UREncoder urEncoder;
   final PrettyQrDecoration? decoration;
 
-  const AnimatedQRCode({
-    Key? key,
-    required this.urEncoder,
-    this.decoration,
-  }) : super(key: key);
+  const AnimatedQRCode({super.key, required this.urEncoder, this.decoration});
 
   @override
   Widget build(BuildContext context) {
-    return BlocProvider(
-      create: (BuildContext context) => _Cubit(urEncoder, decoration),
-      child: const _AnimatedQRCode(),
-    );
+    return BlocProvider(create: (BuildContext context) => _Cubit(urEncoder, decoration), child: const _AnimatedQRCode());
   }
 }
 
 class _AnimatedQRCode extends StatefulWidget {
-  const _AnimatedQRCode({Key? key}) : super(key: key);
+  const _AnimatedQRCode();
 
   @override
   _AnimatedQRCodeState createState() => _AnimatedQRCodeState();
@@ -82,18 +75,14 @@ class _AnimatedQRCodeState extends State<_AnimatedQRCode> {
 
   @override
   Widget build(BuildContext context) {
-    return BlocBuilder<_Cubit, _State>(builder: (context, state) {
-      if (state is _AnimatedQRDataState) {
-        return PrettyQrView.data(
-          data: state.data,
-          decoration: _cubit.decoration,
-        );
-      }
-      return PrettyQrView.data(
-        data: _cubit.currentQR,
-        decoration: _cubit.decoration,
-      );
-    });
+    return BlocBuilder<_Cubit, _State>(
+      builder: (context, state) {
+        if (state is _AnimatedQRDataState) {
+          return PrettyQrView.data(data: state.data, decoration: _cubit.decoration);
+        }
+        return PrettyQrView.data(data: _cubit.currentQR, decoration: _cubit.decoration);
+      },
+    );
   }
 
   @override

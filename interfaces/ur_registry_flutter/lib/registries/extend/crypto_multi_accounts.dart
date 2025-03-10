@@ -13,27 +13,19 @@ typedef NativeGetKeysLen = Pointer<Response> Function(Pointer<Void>);
 typedef GetKeysLen = Pointer<Response> Function(Pointer<Void>);
 
 class CryptoMultiAccounts extends NativeObject {
-  CryptoMultiAccounts(Pointer<Void> object) : super(){
+  CryptoMultiAccounts(Pointer<Void> object) : super() {
     nativeObject = object;
   }
 
-  late final NativeGetDevice nativeGetDevice = lib
-      .lookup<NativeFunction<NativeGetMasterFingerprint>>(
-          "${nativePrefix}_get_device")
-      .asFunction();
+  late final NativeGetDevice nativeGetDevice =
+      lib.lookup<NativeFunction<NativeGetMasterFingerprint>>("${nativePrefix}_get_device").asFunction();
 
-  late final NativeGetMasterFingerprint nativeGetMasterFingerprint = lib
-      .lookup<NativeFunction<NativeGetMasterFingerprint>>(
-          "${nativePrefix}_get_master_fingerprint")
-      .asFunction();
+  late final NativeGetMasterFingerprint nativeGetMasterFingerprint =
+      lib.lookup<NativeFunction<NativeGetMasterFingerprint>>("${nativePrefix}_get_master_fingerprint").asFunction();
 
-  late final GetKey getKey = lib
-      .lookup<NativeFunction<NativeGetKey>>("${nativePrefix}_get_key")
-      .asFunction();
+  late final GetKey getKey = lib.lookup<NativeFunction<NativeGetKey>>("${nativePrefix}_get_key").asFunction();
 
-  late final GetKeysLen getKeysLen = lib
-      .lookup<NativeFunction<NativeGetKeysLen>>("${nativePrefix}_get_keys_len")
-      .asFunction();
+  late final GetKeysLen getKeysLen = lib.lookup<NativeFunction<NativeGetKeysLen>>("${nativePrefix}_get_keys_len").asFunction();
 
   String getDevice() {
     final response = nativeGetDevice(nativeObject).ref;

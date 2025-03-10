@@ -18,18 +18,12 @@ class CryptoPSBT extends NativeObject {
     nativeObject = object;
   }
 
-  late NativeGetData nativeGetData = lib
-      .lookup<NativeFunction<NativeGetData>>("${nativePrefix}_get_data")
-      .asFunction();
+  late NativeGetData nativeGetData = lib.lookup<NativeFunction<NativeGetData>>("${nativePrefix}_get_data").asFunction();
 
-  late NativeConstruct nativeConstruct = lib
-      .lookup<NativeFunction<NativeConstruct>>("${nativePrefix}_construct")
-      .asFunction();
+  late NativeConstruct nativeConstruct = lib.lookup<NativeFunction<NativeConstruct>>("${nativePrefix}_construct").asFunction();
 
-  late NativeGetUREncoder nativeGetUREncoder = lib
-      .lookup<NativeFunction<NativeGetUREncoder>>(
-          "${nativePrefix}_get_ur_encoder")
-      .asFunction();
+  late NativeGetUREncoder nativeGetUREncoder =
+      lib.lookup<NativeFunction<NativeGetUREncoder>>("${nativePrefix}_get_ur_encoder").asFunction();
 
   CryptoPSBT.factory(List<int> psbt) : super() {
     final psbtStr = hex.encode(psbt);

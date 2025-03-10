@@ -9,7 +9,7 @@ const typeBoolean = "BOOLEAN";
 const typeUInt32 = "UINT32";
 const typeString = "STRING";
 
-class Data extends Union {
+base class Data extends Union {
   external Pointer<Void> _object;
 
   @Bool()
@@ -43,7 +43,7 @@ class Data extends Union {
   }
 }
 
-class Response extends Struct {
+base class Response extends Struct {
   @Uint32()
   external int statusCode;
 
@@ -62,7 +62,7 @@ class Response extends Struct {
   }
 
   void checkValueType(String target) {
-    if(valueType.toDartString() != target) throw Exception("Wrong response type, expected $target, received ${valueType.toDartString()}");
+    if (valueType.toDartString() != target) throw Exception("Wrong response type, expected $target, received ${valueType.toDartString()}");
   }
 
   Pointer<Void> getObject() {

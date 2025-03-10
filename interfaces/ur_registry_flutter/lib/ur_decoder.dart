@@ -15,12 +15,10 @@ import 'registries/solana/sol_sign_request.dart';
 const nativePrefix = "ur_decoder";
 
 typedef NativeNew = Pointer<Response> Function();
-typedef NativeReceive = Pointer<Response> Function(
-    Pointer<Void>, Pointer<Utf8>);
+typedef NativeReceive = Pointer<Response> Function(Pointer<Void>, Pointer<Utf8>);
 typedef NativeResult = Pointer<Response> Function(Pointer<Void>);
 typedef NativeIsComplete = Pointer<Response> Function(Pointer<Void>);
-typedef NativeResolve = Pointer<Response> Function(
-    Pointer<Void>, Pointer<Utf8>);
+typedef NativeResolve = Pointer<Response> Function(Pointer<Void>, Pointer<Utf8>);
 
 enum SupportedType {
   cryptoHDKey,
@@ -43,20 +41,11 @@ const _ethSignRequest = 'eth-sign-request';
 const _ethSignature = 'eth-signature';
 
 class URDecoder extends NativeObject {
-  late NativeNew nativeNew =
-      lib.lookup<NativeFunction<NativeNew>>("${nativePrefix}_new").asFunction();
-  late NativeReceive nativeReceive = lib
-      .lookup<NativeFunction<NativeReceive>>("${nativePrefix}_receive")
-      .asFunction();
-  late NativeIsComplete nativeIsComplete = lib
-      .lookup<NativeFunction<NativeIsComplete>>("${nativePrefix}_is_complete")
-      .asFunction();
-  late NativeResult nativeResult = lib
-      .lookup<NativeFunction<NativeResult>>("${nativePrefix}_result")
-      .asFunction();
-  late NativeResolve nativeResolve = lib
-      .lookup<NativeFunction<NativeResolve>>("${nativePrefix}_resolve")
-      .asFunction();
+  late NativeNew nativeNew = lib.lookup<NativeFunction<NativeNew>>("${nativePrefix}_new").asFunction();
+  late NativeReceive nativeReceive = lib.lookup<NativeFunction<NativeReceive>>("${nativePrefix}_receive").asFunction();
+  late NativeIsComplete nativeIsComplete = lib.lookup<NativeFunction<NativeIsComplete>>("${nativePrefix}_is_complete").asFunction();
+  late NativeResult nativeResult = lib.lookup<NativeFunction<NativeResult>>("${nativePrefix}_result").asFunction();
+  late NativeResolve nativeResolve = lib.lookup<NativeFunction<NativeResolve>>("${nativePrefix}_resolve").asFunction();
 
   URDecoder() : super() {
     final response = nativeNew().ref;
@@ -81,38 +70,29 @@ class URDecoder extends NativeObject {
   NativeObject resolve(SupportedType type) {
     switch (type) {
       case SupportedType.cryptoHDKey:
-        final response =
-            nativeResolve(nativeObject, _cryptoHDKey.toNativeUtf8()).ref;
+        final response = nativeResolve(nativeObject, _cryptoHDKey.toNativeUtf8()).ref;
         return CryptoHDKey(response.getObject());
       case SupportedType.cryptoAccount:
-        final response =
-            nativeResolve(nativeObject, _cryptoAccount.toNativeUtf8()).ref;
+        final response = nativeResolve(nativeObject, _cryptoAccount.toNativeUtf8()).ref;
         return CryptoAccount(response.getObject());
       case SupportedType.cryptoPSBT:
         final response = nativeResolve(nativeObject, _cryptoPSBT.toNativeUtf8()).ref;
         return CryptoPSBT(response.getObject());
       case SupportedType.cryptoMultiAccounts:
-        final response =
-            nativeResolve(nativeObject, _cryptoMultiAccounts.toNativeUtf8()).ref;
+        final response = nativeResolve(nativeObject, _cryptoMultiAccounts.toNativeUtf8()).ref;
         return CryptoMultiAccounts(response.getObject());
       case SupportedType.solSignRequest:
-        final response =
-            nativeResolve(nativeObject, _solSignRequest.toNativeUtf8()).ref;
+        final response = nativeResolve(nativeObject, _solSignRequest.toNativeUtf8()).ref;
         return SolSignRequest(response.getObject());
       case SupportedType.solSignature:
-        final response =
-            nativeResolve(nativeObject, _solSignature.toNativeUtf8()).ref;
+        final response = nativeResolve(nativeObject, _solSignature.toNativeUtf8()).ref;
         return SolSignature(response.getObject());
       case SupportedType.ethSignRequest:
-        final response =
-            nativeResolve(nativeObject, _ethSignRequest.toNativeUtf8()).ref;
+        final response = nativeResolve(nativeObject, _ethSignRequest.toNativeUtf8()).ref;
         return EthSignRequest(response.getObject());
       case SupportedType.ethSignature:
-        final response =
-            nativeResolve(nativeObject, _ethSignature.toNativeUtf8()).ref;
+        final response = nativeResolve(nativeObject, _ethSignature.toNativeUtf8()).ref;
         return EthSignature(response.getObject());
-      default:
-        throw Exception("type $type is not supported");
-    }
+      }
   }
 }

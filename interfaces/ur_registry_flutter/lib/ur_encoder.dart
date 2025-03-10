@@ -8,9 +8,7 @@ typedef NativeNextPart = Pointer<Response> Function(Pointer<Void>);
 const nativePrefix = "ur_encoder";
 
 class UREncoder extends NativeObject {
-  late NativeNextPart nativeNextPart = lib
-      .lookup<NativeFunction<NativeNextPart>>("${nativePrefix}_next_part")
-      .asFunction();
+  late NativeNextPart nativeNextPart = lib.lookup<NativeFunction<NativeNextPart>>("${nativePrefix}_next_part").asFunction();
 
   UREncoder(Pointer<Void> object) : super() {
     nativeObject = object;
