@@ -20,19 +20,12 @@ class CryptoAccount extends NativeObject {
     nativeObject = object;
   }
 
-  late NativeGetLength nativeGetLength = lib
-      .lookup<NativeFunction<NativeGetLength>>(
-          "${nativePrefix}_get_accounts_len")
-      .asFunction();
+  late NativeGetLength nativeGetLength = lib.lookup<NativeFunction<NativeGetLength>>("${nativePrefix}_get_accounts_len").asFunction();
 
-  late FNGetAccount getAccount = lib
-      .lookup<NativeFunction<NativeGetAccount>>("${nativePrefix}_get_account")
-      .asFunction<FNGetAccount>();
+  late FNGetAccount getAccount = lib.lookup<NativeFunction<NativeGetAccount>>("${nativePrefix}_get_account").asFunction<FNGetAccount>();
 
-  late NativeGetMasterFingerprint nativeGetMasterFingerprint = lib
-      .lookup<NativeFunction<NativeGetMasterFingerprint>>(
-          "${nativePrefix}_get_master_fingerprint")
-      .asFunction();
+  late NativeGetMasterFingerprint nativeGetMasterFingerprint =
+      lib.lookup<NativeFunction<NativeGetMasterFingerprint>>("${nativePrefix}_get_master_fingerprint").asFunction();
 
   String getMasterFingerprint() {
     final response = nativeGetMasterFingerprint(nativeObject).ref;

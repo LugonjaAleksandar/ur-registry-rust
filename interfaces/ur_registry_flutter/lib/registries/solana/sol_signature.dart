@@ -15,14 +15,9 @@ class SolSignature extends NativeObject {
     nativeObject = object;
   }
 
-  late NativeGetRequestId nativeGetRequestId = lib
-      .lookup<NativeFunction<NativeGetRequestId>>(
-          "${nativePrefix}_get_request_id")
-      .asFunction();
-  late NativeGetSignature nativeGetSignature = lib
-      .lookup<NativeFunction<NativeGetSignature>>(
-          "${nativePrefix}_get_signature")
-      .asFunction();
+  late NativeGetRequestId nativeGetRequestId =
+      lib.lookup<NativeFunction<NativeGetRequestId>>("${nativePrefix}_get_request_id").asFunction();
+  late NativeGetSignature nativeGetSignature = lib.lookup<NativeFunction<NativeGetSignature>>("${nativePrefix}_get_signature").asFunction();
 
   String getRequestId() {
     final response = nativeGetRequestId(nativeObject).ref;
